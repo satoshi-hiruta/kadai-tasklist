@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>タスク一覧</h1>
+    <h1 class="text-center">タスク一覧</h1>
     
     @if (count($tasklists) > 0)
         <table class="table table-striped">
@@ -23,6 +23,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!! $tasklists->render() !!}
     @endif
 
     {!! link_to_route('tasklists.create', '新規タスクの投稿', null, ['class' => 'btn btn-primary']) !!}

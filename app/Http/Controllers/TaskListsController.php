@@ -18,11 +18,24 @@ class TaskListsController extends Controller
      */
     public function index()
     {
-        $tasklists = Task::all();
+
+        $data = [];
         
-        return view('tasklists.index', [
-            'tasklists' => $tasklists,
-        ]);
+        if(\Auth::check()) {
+            $user = \Auth::user();
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            
+            return view('tasklists.index', [
+                'tasklists' => $tasks,
+            ]);
+            
+        }
+        $data = ['user' => NULL , 'tasks' => NULL];
+        return view('welcome', $data);
+        
+        //$tasklists = Task::paginate(10);
+        
+        
     }
 
     /**
@@ -61,10 +74,17 @@ class TaskListsController extends Controller
             'status'   => 'ステータス',
         ]);
         
+        $request->user()->tasks()->create([
+            'content' => $request->content,
+            'status' => $request->status,
+        ]);
+        
+        /*
         $task = new Task;
         $task->content = $request->content;
         $task->status = $request->status;
         $task->save();
+        */
         
         return redirect('/');
     }

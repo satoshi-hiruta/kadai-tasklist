@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>id: {{ $task->id }} のタスク編集ページ</h1>
+    <h1 class="text-center">id: {{ $task->id }} のタスク編集ページ</h1>
 
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">

@@ -99,6 +99,11 @@ class TaskListsController extends Controller
     {
         $task = Task::find($id);
         
+        //ログインユーザーとタスク登録ユーザーが異なる時はトップへ
+        if ($task->user_id != \Auth::user()->id) {
+            return redirect('/');
+        }
+        
         return view('tasklists.show', [
             'task' => $task,
         ]);
@@ -113,6 +118,11 @@ class TaskListsController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
+        
+        //ログインユーザーとタスク登録ユーザーが異なる時はトップへ
+        if ($task->user_id != \Auth::user()->id) {
+            return redirect('/');
+        }
         
         return view('tasklists.edit', [
             'task' => $task,
@@ -129,6 +139,13 @@ class TaskListsController extends Controller
     public function update(Request $request, $id)
     {
         
+        $task = Task::find($id);
+        
+        //ログインユーザーとタスク登録ユーザーが異なる時はトップへ
+        if ($task->user_id != \Auth::user()->id) {
+            return redirect('/');
+        }
+        
         $this->validate($request, [
             'content' => 'required|max:255',
             'status' => 'required|max:10',
@@ -142,10 +159,12 @@ class TaskListsController extends Controller
             'status'   => 'ステータス',
         ]);
         
-        $task = Task::find($id);
+        
+        
         $task->content = $request->content;
         $task->status = $request->status;
         $task->save();
+        
         
         return redirect('/');
     }
@@ -159,6 +178,12 @@ class TaskListsController extends Controller
     public function destroy($id)
     {
         $task = Task::find($id);
+        
+        //ログインユーザーとタスク登録ユーザーが異なる時はトップへ
+        if ($task->user_id != \Auth::user()->id) {
+            return redirect('/');
+        }
+        
         $task->delete();
         
         return redirect('/');
